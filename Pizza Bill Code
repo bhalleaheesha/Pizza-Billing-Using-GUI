@@ -1,0 +1,100 @@
+import tkinter as tk
+from tkinter import messagebox
+
+# Function to calculate the bill for each pizza and accumulate the total
+def calculate_bill():
+    try:
+        size = size_var.get()
+        add_pepperoni = pepperoni_var.get()
+        extra_cheese = cheese_var.get()
+        mushrooms = mushrooms_var.get()
+        olives = olives_var.get()
+        quantity = int(quantity_var.get())
+        
+        bill = 0
+        
+        # Calculate the base price based on pizza size
+        if size == "S":
+            bill += 15
+        elif size == "M":
+            bill += 20
+        elif size == "L":
+            bill += 25
+        else:
+            messagebox.showerror("Error", "Please select a pizza size.")
+            return
+        
+        # Add cost for pepperoni if requested
+        if add_pepperoni == "Y":
+            if size == "S":
+                bill += 2
+            else:
+                bill += 3
+        
+        # Add cost for extra cheese if requested
+        if extra_cheese == "Y":
+            bill += 1
+        
+        # Add cost for additional toppings
+        if mushrooms == "Y":
+            bill += 1.5
+        
+        if olives == "Y":
+            bill += 1.5
+        
+        # Multiply by the number of pizzas ordered
+        total_bill = bill * quantity
+        
+        # Show the detailed bill summary
+        messagebox.showinfo("Final Bill", f"Your order summary:\n"
+                                          f"Pizza Size: {size}\n"
+                                          f"Pepperoni: {'Yes' if add_pepperoni == 'Y' else 'No'}\n"
+                                          f"Extra Cheese: {'Yes' if extra_cheese == 'Y' else 'No'}\n"
+                                          f"Mushrooms: {'Yes' if mushrooms == 'Y' else 'No'}\n"
+                                          f"Olives: {'Yes' if olives == 'Y' else 'No'}\n"
+                                          f"Quantity: {quantity}\n\n"
+                                          f"Your total bill is: ${total_bill:.2f}.")
+    except ValueError:
+        messagebox.showerror("Error", "Please enter a valid quantity.")
+
+# Create the main window
+root = tk.Tk()
+root.title("Python Pizza Deliveries")
+
+# Create StringVar variables to store user inputs
+size_var = tk.StringVar(value="S")
+pepperoni_var = tk.StringVar(value="N")
+cheese_var = tk.StringVar(value="N")
+mushrooms_var = tk.StringVar(value="N")
+olives_var = tk.StringVar(value="N")
+quantity_var = tk.StringVar(value="1")
+
+# Create and place the widgets
+tk.Label(root, text="What size pizza do you want?").pack(anchor="w")
+tk.Radiobutton(root, text="Small", variable=size_var, value="S").pack(anchor="w")
+tk.Radiobutton(root, text="Medium", variable=size_var, value="M").pack(anchor="w")
+tk.Radiobutton(root, text="Large", variable=size_var, value="L").pack(anchor="w")
+
+tk.Label(root, text="Do you want pepperoni?").pack(anchor="w")
+tk.Radiobutton(root, text="Yes", variable=pepperoni_var, value="Y").pack(anchor="w")
+tk.Radiobutton(root, text="No", variable=pepperoni_var, value="N").pack(anchor="w")
+
+tk.Label(root, text="Do you want extra cheese?").pack(anchor="w")
+tk.Radiobutton(root, text="Yes", variable=cheese_var, value="Y").pack(anchor="w")
+tk.Radiobutton(root, text="No", variable=cheese_var, value="N").pack(anchor="w")
+
+tk.Label(root, text="Do you want mushrooms?").pack(anchor="w")
+tk.Radiobutton(root, text="Yes", variable=mushrooms_var, value="Y").pack(anchor="w")
+tk.Radiobutton(root, text="No", variable=mushrooms_var, value="N").pack(anchor="w")
+
+tk.Label(root, text="Do you want olives?").pack(anchor="w")
+tk.Radiobutton(root, text="Yes", variable=olives_var, value="Y").pack(anchor="w")
+tk.Radiobutton(root, text="No", variable=olives_var, value="N").pack(anchor="w")
+
+tk.Label(root, text="How many pizzas do you want?").pack(anchor="w")
+tk.Entry(root, textvariable=quantity_var).pack(anchor="w")
+
+tk.Button(root, text="Calculate Bill", command=calculate_bill).pack()
+
+# Run the application
+root.mainloop()
